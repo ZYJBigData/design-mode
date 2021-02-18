@@ -1,4 +1,7 @@
 package com.zyj.play.design.mode.factorypattern.pizza;
 
-public class NYStyleVeggiePizza {
+/**
+ * @author zhangyingjie
+ */
+public class NYStyleVeggiePizza extends Pizza {
 }
