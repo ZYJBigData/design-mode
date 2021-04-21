@@ -1,5 +1,6 @@
 package com.zyj.play.interview.questions.jvm.oom;
 
+import java.io.*;
 import java.nio.ByteBuffer;
 
 /**
@@ -7,7 +8,7 @@ import java.nio.ByteBuffer;
  * 这种错误的出现主要是基于Netty的出现 因为其底层的实现是NIO
  */
 public class GcBufferMemory {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("配置的maxDirectMemory:" + sun.misc.VM.maxDirectMemory());
         try {
             Thread.sleep(3000);
@@ -17,3 +18,4 @@ public class GcBufferMemory {
         ByteBuffer bb = ByteBuffer.allocateDirect(6 * 1024 * 1024);
     }
 }
+

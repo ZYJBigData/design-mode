@@ -1,5 +1,7 @@
 package com.zyj.play.interview.questions;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author zhangyingjie
  * 小程序用来验证其能够保证
@@ -7,5 +9,4 @@ package com.zyj.play.interview.questions;
  */
 
 public class Volatile {
-
 }

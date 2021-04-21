@@ -167,6 +167,8 @@
 
 * ifstat 查看网络IO
 
+* netstat 监控TCP/IP网络  netstat -antp | grep java 
+
 
 
 

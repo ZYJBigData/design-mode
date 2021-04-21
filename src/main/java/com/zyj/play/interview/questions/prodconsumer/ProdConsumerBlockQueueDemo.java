@@ -1,7 +1,5 @@
 package com.zyj.play.interview.questions.prodconsumer;
 
-import com.sun.tools.javac.util.StringUtils;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +33,7 @@ public class ProdConsumerBlockQueueDemo {
                 }
                 TimeUnit.SECONDS.sleep(1);
             }
-            System.out.println(Thread.currentThread().getName() + "\t 大老板叫停了,表示FLAG=false ,生产座动作结束");
+            System.out.println(Thread.currentThread().getName() + "\t 大老板叫停了,表示FLAG=false ,生产动作结束");
         }
 
         public void myConsumer() throws InterruptedException {

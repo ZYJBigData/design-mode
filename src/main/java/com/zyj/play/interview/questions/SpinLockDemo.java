@@ -14,14 +14,14 @@ public class SpinLockDemo {
         Thread thread = Thread.currentThread();
         System.out.println(Thread.currentThread().getName() + "come in");
         while (!atomicReference.compareAndSet(null, thread)) {
-            System.out.println("进入while循环了。。。。");
+            System.out.println(Thread.currentThread().getName() + " 进入while循环了。。。。");
         }
     }
 
     public void myUnLock() {
         Thread thread = Thread.currentThread();
         atomicReference.compareAndSet(thread, null);
-        System.out.println(Thread.currentThread().getName() + "invoked myUnLock");
+        System.out.println(Thread.currentThread().getName() + " invoked myUnLock");
     }
 
     public static void main(String[] args) {
@@ -44,7 +44,6 @@ public class SpinLockDemo {
         }
 
         new Thread(() -> {
-            spinLockDemo.myLock();
             spinLockDemo.myUnLock();
         }, "BB").start();
     }

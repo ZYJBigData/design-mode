@@ -58,7 +58,7 @@
 
     * -Xms -Xmx 两个经典的参数，算是哪种参数类型。这个如何解释（java -Xms256m -Xmx2048m）
       * 其实-Xms 就是等于 -XX:initialHeapSize
-      * -Xmx 就是等于 -XX:MaxHepSize
+      * -Xmx 就是等于 -XX:MaxHeapSize
 
   * 第二种盘点jvm系统默认值
 
@@ -314,7 +314,7 @@
     }
     ```
 
-* PhontomReference
+* PhantomReference
 
   <img src="/Users/zhangyingjie/IdeaProjects/design-mode/image/image-20210414104610792.png" alt="image-20210414104610792" style="zoom:40%;" />
 
