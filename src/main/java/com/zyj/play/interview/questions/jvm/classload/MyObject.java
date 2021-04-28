@@ -11,7 +11,7 @@ public class MyObject {
         System.out.println(object.getClass().getClassLoader().getParent().getParent());
         System.out.println("***************************************'");
 
-        MyObject myObject=new MyObject();
+        MyObject myObject = new MyObject();
         System.out.println(myObject.getClass().getClassLoader().getParent().getParent());
         System.out.println(myObject.getClass().getClassLoader().getParent());
         System.out.println(myObject.getClass().getClassLoader());
