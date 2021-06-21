@@ -21,32 +21,34 @@ public class DataSource {
         );
     }
 
-//    public static List<Tuple3<String, Long,Integer>> getTuple2List() {
-//        return Arrays.asList(new Tuple3<>("key", 1623808800000L,1),
-//                new Tuple3<>("key1", 1623808803000L,2),
-//                new Tuple3<>("key1", 1623808805000L,3),
-//                new Tuple3<>("key1", 1623808812000L,4),
-//                new Tuple3<>("key", 1623808815000L,5444),
-//                new Tuple3<>("key", 1623808824000L,6),
-//                new Tuple3<>("key", 1623808830000L,7),
-//                new Tuple3<>("key", 1623808842000L,8)
-//        );
-//    }
+    public static List<Tuple3<String, Long, Integer>> getTuple2List_two() {
+        return Arrays.asList(
+                new Tuple3<>("key", 1623808800000L, 1),
+                new Tuple3<>("key", 1623808803000L, 2),
+                new Tuple3<>("key", 1623808805000L, 3),
+                new Tuple3<>("key", 1623808812000L, 4),
+                new Tuple3<>("key", 1623808815000L, 5444),
+                new Tuple3<>("key", 1623808824000L, 6),
+                new Tuple3<>("key", 1623808830000L, 7),
+                new Tuple3<>("key", 1623808842000L, 8)
+        );
+    }
 
 
     public static List<Tuple3<String, Long, Integer>> getTuple2List() {
-        return Arrays.asList(new Tuple3<>("key", 1623808800000L, 1),
+        return Arrays.asList(
+                new Tuple3<>("key", 1623808800000L, 1),
                 new Tuple3<>("key", 1623808803000L, 2),
                 new Tuple3<>("key", 1623808805000L, 3),
                 new Tuple3<>("key", 1623808812000L, 4),
                 new Tuple3<>("key", 1623808815000L, 5444),
                 new Tuple3<>("key", 1623808824000L, 6),
                 new Tuple3<>("key", 1623808830000L, 6),
-                new Tuple3<>("key", 1623808844000L, 6),
-                new Tuple3<>("key", 1623808850000L, 7),
-                new Tuple3<>("key", 1623808842000L, 8),
-                new Tuple3<>("key", 1623808841000L, 8),
-                new Tuple3<>("key", 1623808835000L, 8)
+                new Tuple3<>("key", 1623808844000L, 6)
+//                new Tuple3<>("key", 1623808850000L, 7),
+//                new Tuple3<>("key", 1623808842000L, 8),
+//                new Tuple3<>("key", 1623808841000L, 8),
+//                new Tuple3<>("key", 1623808835000L, 8)
         );
     }
 
