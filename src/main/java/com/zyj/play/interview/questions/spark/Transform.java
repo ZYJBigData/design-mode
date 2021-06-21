@@ -82,8 +82,9 @@ public class Transform {
 //        sortByKeyDemo(sc,scores);
 //        joinDemo(sc,students,stuScores);
 //        cogroupDemo(sc, students, stuScores);
-        aggregateByKeyDemo(sc, scores);
+//        aggregateByKeyDemo(sc, scores);
 //        combineByKeyDemo(sc,scoreDetails);
+        combineByKeyWc(sc);
         closeContext(sc);
     }
 
@@ -232,5 +233,15 @@ public class Transform {
         //mark rdd 只有在jsc(JavaSparkContext)是不具备这个方法的  它只在sc(SparkContext)中有这个方法
         JavaRDD<Tuple2<String, Integer>> rdd = sc.parallelize(student);
         JavaPairRDD<String, Integer> stringIntegerJavaPairRDD = sc.parallelizePairs(student);
+    }
+
+    //通过combineByKey实现wordCount程序
+    public static void combineByKeyWc(JavaSparkContext sc) {
+        List<String> list = Arrays.asList("hello spark", "hello java", "hello flink","hello flink","hello java","hello spark");
+        JavaRDD<String> parallelize = sc.parallelize(list);
+        JavaRDD<String> rdd1 = parallelize.flatMap(line -> Arrays.stream(line.split(",")).iterator());
+        JavaPairRDD<String, Integer> rdd2 = rdd1.mapToPair((PairFunction<String, String, Integer>) s -> new Tuple2<>(s, 1));
+        JavaPairRDD<String, Integer> rdd3 = rdd2.combineByKey((Function<Integer, Integer>) v1 -> 1, (Function2<Integer, Integer, Integer>) Integer::sum, (Function2<Integer, Integer, Integer>) Integer::sum);
+        rdd3.foreach((VoidFunction<Tuple2<String, Integer>>) v1 -> System.out.println("word: " + v1._1 + " count: " + v1._2));
     }
 }
