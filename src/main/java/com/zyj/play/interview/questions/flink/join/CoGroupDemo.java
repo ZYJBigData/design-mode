@@ -21,6 +21,9 @@ import java.util.Iterator;
  * 8> a=>a
  * 3> b=>b
  * 1> e=>e
+ *
+ * coGroup和Join之间的区别就是 join只能输出两个流都存在的元素，但是coGroup是可以进行选择自己的实现的，
+ * 可以选择将两个流都有的元素输出，也可以选择将全部的元素输出
  */
 public class CoGroupDemo {
     public static void main(String[] args) throws Exception {
@@ -36,14 +39,14 @@ public class CoGroupDemo {
                     public void coGroup(Iterable<WordWithCount> first, Iterable<WordWithCount> second, Collector<String> out) throws Exception {
                         Iterator<WordWithCount> iterator = first.iterator();
                         Iterator<WordWithCount> iterator1 = second.iterator();
-
                         while (iterator.hasNext()) {
-                            while (iterator1.hasNext()) {
-                                out.collect(iterator.next().word + "=>" + iterator1.next().word);
-                            }
+                            out.collect(iterator.next().word);
+                        }
+                        while (iterator1.hasNext()) {
+                            out.collect(iterator1.next().word);
                         }
                     }
-                });
+                }).print();
         env.execute("co group test");
     }
 }

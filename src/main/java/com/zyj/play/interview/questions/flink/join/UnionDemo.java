@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 /**
  * @author zhangyingjie
- * 单纯的将两个流合并在一起
+ * 单纯的将两个流合并在一起，两个流的数据全部输出
  */
 public class UnionDemo {
     public static void main(String[] args) throws Exception {
