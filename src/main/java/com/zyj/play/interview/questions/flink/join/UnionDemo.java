@@ -28,7 +28,8 @@ public class UnionDemo {
                             out.collect(iterator.next());
                         }
                     }
-                }).print();
+                }).returns(WordWithCount.class)
+                .print();
         env.execute();
     }
 }
