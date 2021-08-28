@@ -8,29 +8,28 @@ import lombok.extern.slf4j.Slf4j;
  * 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
  *
  * @author zhangyingjie
+ * <p>
  */
 @Slf4j
-public class Solution {
+public class StockSolution {
     public static void main(String[] args) {
 //        int[] prices = {7, 6, 4, 3, 1};
+        int[] prices = {1, 2};
 //        int[] prices = {7, 1, 5, 3, 6, 4};
-        int[] prices = {2, 4, 1};
+//        int[] prices = {2, 4, 1};
         int i = maxProfit(prices);
-        System.out.println("result==" + i);
     }
 
-    public static int maxProfit(int[] prices) {
-        int max = 0;
+    public static int maxProfit(int prices[]) {
+        int minprice = Integer.MAX_VALUE;
+        int maxprofit = 0;
         for (int i = 0; i < prices.length; i++) {
-            for (int j = i + 1; j < prices.length; j++) {
-                if (prices[j] > prices[i]) {
-                    int value = prices[j] - prices[i];
-                    if (max < value) {
-                        max = value;
-                    }
-                }
+            if (prices[i] < minprice) {
+                minprice = prices[i];
+            } else if (prices[i] - minprice > maxprofit) {
+                maxprofit = prices[i] - minprice;
             }
         }
-        return max;
+        return maxprofit;
     }
 }
