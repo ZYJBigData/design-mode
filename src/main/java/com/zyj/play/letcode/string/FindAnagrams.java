@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public class FindAnagrams {
     public static void main(String[] args) {
-//        String s = "cbaebabacd";
-//        String p = "abc";
-        String s = "abab";
-        String p = "ab";
+        String s = "cbaebabacd";
+        String p = "abc";
+//        String s = "abab";
+//        String p = "ab";
         FindAnagrams findAnagrams = new FindAnagrams();
         List<Integer> anagrams = findAnagrams.findAnagrams(s, p);
         System.out.println("anagrams==={}" + anagrams);

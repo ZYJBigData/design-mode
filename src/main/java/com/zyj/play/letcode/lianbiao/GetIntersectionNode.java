@@ -1,4 +1,4 @@
-package com.zyj.play.letcode;
+package com.zyj.play.letcode.lianbiao;
 
 import java.util.Objects;
 
