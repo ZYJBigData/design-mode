@@ -5,3 +5,8 @@
 *.iml
 target/
 venv/
+logs
+zyj
+.gitignore
+.DS_Store
+

@@ -1,8 +1,16 @@
 package com.zyj.play.interview.questions.flink.util;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections.CollectionUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author zhangyingjie
@@ -14,5 +22,98 @@ public class JsonUtil {
 
     public static ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
+    }
+
+    private final static String PARAM = "params";
+
+    public static void main(String[] args) throws IOException {
+        String jsonTest = "{\n" +
+                "\t\"tasks\": [{\n" +
+                "\t\t\"conditionsTask\": false,\n" +
+                "\t\t\"forbidden\": false,\n" +
+                "\t\t\"maxRetryTimes\": 10,\n" +
+                "\t\t\"name\": \"org.apache.flink.examples.java.wordcount\",\n" +
+                "\t\t\"params\": \"{\\\"mainJar\\\":{\\\"id\\\":4},\\\"programType\\\":\\\"JAVA\\\",\\\"mainClass\\\":\\\"org.apache.flink.examples.java.wordcount.WordCount\\\",\\\"deployMode\\\":\\\"standalone\\\",\\\"parallelism\\\":\\\"1\\\"}\",\n" +
+                "\t\t\"retryInterval\": 1,\n" +
+                "\t\t\"taskTimeoutParameter\": {\n" +
+                "\t\t\t\"enable\": false,\n" +
+                "\t\t\t\"interval\": 0\n" +
+                "\t\t},\n" +
+                "\t\t\"type\": \"FLINK\",\n" +
+                "\t\t\"workerGroup\": \"default\"\n" +
+                "\t}],\n" +
+                "\t\"tenantId\": 0,\n" +
+                "\t\"timeout\": 0\n" +
+                "}";
+//        System.out.println("source==={}"+jsonTest);
+//        String update = updateJson(jsonTest, "deployMode", "yarn");
+//        System.out.println(updateJson(update, "params", null));
+        List<String> result = new ArrayList<>();
+        System.out.println(getDeployMode(jsonTest, "deployMode", result));
+//        System.out.println(result);
+    }
+
+    public static String getDeployMode(String processDefinitionJson, String keySpecial, List<String> list) {
+        JSONObject jsonObject = JSONObject.parseObject(processDefinitionJson);
+        Set<String> keySet = jsonObject.keySet();
+        for (String key : keySet) {
+            if (key.equalsIgnoreCase(PARAM)) {
+                String params = jsonObject.get(PARAM).toString().replace("\\\\", "");
+                jsonObject.put(key, JSONObject.parse(params));
+            }
+            Object obj = jsonObject.get(key);
+            if (obj instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) obj;
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    getDeployMode(jsonArray.get(i).toString(), keySpecial, list);
+                }
+            } else if (obj instanceof JSONObject) {
+                getDeployMode(((JSONObject) obj).toJSONString(), keySpecial, list);
+            } else {
+                if (key.equalsIgnoreCase(keySpecial)) {
+                    list.add(jsonObject.get(keySpecial).toString());
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public static String updateJson(String str, String keyModify, String value) {
+        JSONObject json = JSONObject.parseObject(str);
+        Set<String> keySet = json.keySet();
+        for (String key : keySet) {
+            if (PARAM.equalsIgnoreCase(key) && !PARAM.equalsIgnoreCase(keyModify)) {
+                String params = json.get(PARAM).toString().replace("\\\\", "");
+                json.put(key, JSONObject.parse(params));
+            }
+            Object obj = json.get(key);
+            if (obj instanceof JSONArray) {
+                JSONArray arr = (JSONArray) obj;
+                for (int i = 0; i < arr.size(); i++) {
+                    String child = updateJson(arr.get(i).toString(), keyModify, value);
+                    arr.set(i, JSONObject.parse(child));
+                }
+                json.put(key, arr);
+            } else if (obj instanceof JSONObject) {
+                if (PARAM.equalsIgnoreCase(keyModify)) {
+                    String paramsStr = obj.toString().replaceAll("\"", "\\\"");
+                    if (key.equals(keyModify)) {
+                        json.put(key, paramsStr);
+                    }
+                } else {
+                    JSONObject sub = (JSONObject) obj;
+                    String substr = updateJson(sub.toJSONString(), keyModify, value);
+                    json.put(key, JSONObject.parse(substr));
+                }
+            } else {
+                if (key.equals(keyModify)) {
+                    json.put(key, value);
+                }
+            }
+        }
+        return json.toJSONString();
     }
 }

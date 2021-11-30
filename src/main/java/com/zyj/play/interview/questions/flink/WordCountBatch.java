@@ -13,11 +13,27 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
 /**
- * @author zhangyingjie
- * 窗口中进行统计
+ * @author yingjiezhang
  */
-public class WordCountDemo {
+public class WordCountBatch {
     public static void main(String[] args) throws Exception {
+//        final StreamExecutionEnvironment env =
+//                StreamExecutionEnvironment.getExecutionEnvironment();
+//
+//        DataStream<Person> flintstones = env.fromElements(
+//                new Person("Fred", 35),
+//                new Person("Wilma", 35),
+//                new Person("Pebbles", 2));
+//
+//        DataStream<Person> adults = flintstones.filter(new FilterFunction<Person>() {
+//            @Override
+//            public boolean filter(Person person) throws Exception {
+//                return person.age >= 18;
+//            }
+//        });
+//
+//        adults.print();
+//        env.execute();
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(1000);
         env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -47,9 +63,10 @@ public class WordCountDemo {
                     }
                 });
         System.setProperty("HADOOP_USER_NAME", "bizseer");
-        wordCount.writeAsText("hdfs://10.0.90.81:8280/zyj/haha", FileSystem.WriteMode.OVERWRITE);
+        wordCount.writeAsText("hdfs://yingjiedemacbook-prolocal.local:8280/zyj/haha", FileSystem.WriteMode.OVERWRITE);
 //        wordCount.writeAsText("/Users/zhangyingjie/IdeaProjects/design-mode/zyj", FileSystem.WriteMode.NO_OVERWRITE);
-        wordCount.print().setParallelism(2);
+        wordCount.print();
         env.execute("Socket window count");
+
     }
 }
