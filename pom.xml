@@ -177,7 +177,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.zyj.play.interview.questions.flink.WordCountDemo
+                                    <mainClass>com.zyj.play.interview.questions.flink.util.ListUtils
                                     </mainClass>
                                 </transformer>
                                 <transformer
