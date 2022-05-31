@@ -7,9 +7,9 @@ package com.zyj.play.letcode.string;
  */
 public class LongestPalindrome {
     public static void main(String[] args) {
-//        String s = "babad";
+        String s = "babad";
 //        String s="cbbd";
-        String s="a";
+//        String s="a";
 //        String s="ac";
         LongestPalindrome longestPalindrome = new LongestPalindrome();
         String result = longestPalindrome.longestPalindrome(s);

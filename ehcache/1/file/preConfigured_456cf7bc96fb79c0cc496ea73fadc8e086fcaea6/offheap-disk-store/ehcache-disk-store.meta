@@ -1,0 +1,4 @@
+#Key and value types
+#Thu Jan 13 20:51:03 CST 2022
+keyType=java.lang.String
+valueType=com.fasterxml.jackson.databind.node.ArrayNode

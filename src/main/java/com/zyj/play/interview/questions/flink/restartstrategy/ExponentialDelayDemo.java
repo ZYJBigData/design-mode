@@ -1,9 +1,5 @@
 package com.zyj.play.interview.questions.flink.restartstrategy;
 
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
-import org.apache.flink.api.common.time.Time;
-import org.apache.flink.api.java.ExecutionEnvironment;
-
 /**
  * @author zhangyingjie
  * 指数延迟（参数是很难理解的）：
@@ -16,17 +12,17 @@ import org.apache.flink.api.java.ExecutionEnvironment;
  *  指数增长
  */
 public class ExponentialDelayDemo {
-    public static void main(String[] args) {
-        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-        env.setRestartStrategy(RestartStrategies.exponentialDelayRestart(
-                Time.milliseconds(1),
-                Time.milliseconds(1000),
-                // exponential multiplier
-                1.1,
-                // threshold duration to reset delay to its initial value
-                Time.milliseconds(2000),
-                // jitter
-                0.1
-        ));
-    }
+//    public static void main(String[] args) {
+//        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+//        env.setRestartStrategy(RestartStrategies.exponentialDelayRestart(
+//                Time.milliseconds(1),
+//                Time.milliseconds(1000),
+//                // exponential multiplier
+//                1.1,
+//                // threshold duration to reset delay to its initial value
+//                Time.milliseconds(2000),
+//                // jitter
+//                0.1
+//        ));
+//    }
 }

@@ -8,14 +8,15 @@ package com.zyj.play.letcode.array;
 public class MoveZeroes {
     public static void main(String[] args) {
 //        int[] nums = {0,1,0,3,12};
-        int[] nums = {1};
+//        int[] nums = {1};
 //        int[] nums = {2, 1};
 //        int[] nums={1,0,1};
         MoveZeroes moveZeroes = new MoveZeroes();
-        moveZeroes.moveZeroes(nums);
-        for (int i = 0; i < nums.length; i++) {
-            System.out.print(nums[i] + " ");
-        }
+//        moveZeroes.moveZeroes(nums);
+//        for (int i = 0; i < nums.length; i++) {
+//            System.out.print(nums[i] + " ");
+//        }
+        moveZeroes.reverse(1);
     }
 
     public void moveZeroes(int[] nums) {
@@ -32,6 +33,19 @@ public class MoveZeroes {
                 slow++;
             }
             fast++;
+        }
+    }
+
+    public int reverse(int x) {
+        while (true){
+            try {
+                Thread.sleep(5000);
+                System.out.println("****************");
+            }catch (Exception e){
+                System.out.println(e);
+            }finally {
+                System.out.println("结束了。。。");
+            }
         }
     }
 }

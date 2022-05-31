@@ -1,6 +1,7 @@
 package com.zyj.play.letcode.tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,6 +15,8 @@ public class TreeNodeTest {
         root.right.left = new TreeNode(3);
         List<Integer> list = preorderTraversal(root);
         System.out.println("list===={}" + list);
+        HashMap<String, String> map = new HashMap<>();
+        
     }
 
     public static List<Integer> preorderTraversal(TreeNode root) {

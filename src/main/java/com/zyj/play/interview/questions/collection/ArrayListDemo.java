@@ -1,7 +1,9 @@
 package com.zyj.play.interview.questions.collection;
 
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.Vector;
 
 /**
  * @author zhangyingjie
@@ -36,4 +38,6 @@ public class ArrayListDemo {
             }, String.valueOf(i)).start();
         }
     }
+
+
 }

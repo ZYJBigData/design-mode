@@ -2,7 +2,6 @@ package com.zyj.play.interview.questions.spark;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -24,8 +23,9 @@ public class Transform {
     //创建SparkConf 和 SparkContext 对象。
     public static JavaSparkContext getContext() {
         SparkConf conf = new SparkConf()
-                .setAppName("TransformationCases")
+                .setAppName("Transform")
                 .setMaster("local");
+        conf.set("spark.driver.bindAddress", "127.0.0.1");
         JavaSparkContext sc = new JavaSparkContext(conf);
         return sc;
     }
@@ -43,11 +43,13 @@ public class Transform {
         List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<String> text = Arrays.asList("cat,dog,rabbit", "apple,pear,peach", "eyes,nose,mouth");
         List<Tuple2<String, Integer>> scores = Arrays.asList(
-                new Tuple2<String, Integer>("class1", 88),
-                new Tuple2<String, Integer>("class2", 90),
-                new Tuple2<String, Integer>("class2", 85),
-                new Tuple2<String, Integer>("class1", 95),
-                new Tuple2<String, Integer>("class2", 89)
+                new Tuple2<String, Integer>("class1", 1),
+                new Tuple2<String, Integer>("class1", 2),
+                new Tuple2<String, Integer>("class1", 4),
+                new Tuple2<String, Integer>("class2", 3),
+                new Tuple2<String, Integer>("class2", 1),
+                new Tuple2<String, Integer>("class2", 5)
+
         );
         List<Tuple2<Integer, String>> students = Arrays.asList(
                 new Tuple2<Integer, String>(1, "s1"),
@@ -80,12 +82,12 @@ public class Transform {
 //        groupByKeyDemo(sc,scores);
 //        reduceByKeyDemo(sc,scores);
 //        sortByKeyDemo(sc,scores);
-//        joinDemo(sc,students,stuScores);
+//        joinDemo(sc, students, stuScores);
 //        cogroupDemo(sc, students, stuScores);
 //        aggregateByKeyDemo(sc, scores);
-//        combineByKeyDemo(sc,scoreDetails);
-        combineByKeyWc(sc);
-        closeContext(sc);
+//        combineByKeyDemo(sc, scoreDetails);
+//        combineByKeyWc(sc);
+//        closeContext(sc);
     }
 
     //调用 map 算子实现功能：将集合中的每个元素乘以 2 .
@@ -161,39 +163,55 @@ public class Transform {
         JavaPairRDD<Integer, String> stuRdd = sc.parallelizePairs(students);
         JavaPairRDD<Integer, Integer> scoreRdd = sc.parallelizePairs(stuScores);
         JavaPairRDD<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> cogroupedRdd = stuRdd.cogroup(scoreRdd);
-        cogroupedRdd.foreach((VoidFunction<Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>>>) pairs ->
-                System.out.println(pairs._1 + " : " + pairs._2._1 + " : " + pairs._2._2));
+        cogroupedRdd.foreach(new VoidFunction<Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>>>() {
+            @Override
+            public void call(Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> pairs) throws Exception {
+                log.error(pairs._1 + " : (" + pairs._2._1 + " : " + pairs._2._2 + ")");
+            }
+        });
+//        cogroupedRdd.foreach((VoidFunction<Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>>>) pairs ->
+//                System.out.println(pairs._1 + " : " + pairs._2._1 + " : " + pairs._2._2));
     }
 
     /**
      * 第一个参数是：每个key的初始值
      * 第二个参数是： Seq Function， 经测试这个函数就是用来先对每个分区内的数据按照key分别进行函数定义的操作
      * 第三个是个函数， Combiner Function， 对经过 Seq Function 处理过的数据按照key分别进行函数定义的操作
+     * 还是和运用的结果看不懂的话可以看这篇博客
+     * https://blog.csdn.net/qq_35440040/article/details/82691794
      *
      * @param sc
      * @param student
      */
     public static void aggregateByKeyDemo(JavaSparkContext sc, List<Tuple2<String, Integer>> student) {
-        JavaPairRDD<String, Integer> rdd1 = sc.parallelizePairs(student);
+        JavaPairRDD<String, Integer> rdd1 = sc.parallelizePairs(student, 3);
         rdd1.mapPartitionsWithIndex(new Function2<Integer, Iterator<Tuple2<String, Integer>>, Iterator<String>>() {
             @Override
             public Iterator<String> call(Integer v1, Iterator<Tuple2<String, Integer>> v2) throws Exception {
                 ArrayList<String> list = new ArrayList<>();
                 while (v2.hasNext()) {
-                    Tuple2<String, Integer> sd = v2.next();
-                    list.add(sd._1 + ":" + sd._2 + "in" + v1 + 1 + "partition");
+                    list.add(v2.next() + " in " + (v1 + 1) + " partition");
                 }
                 return list.iterator();
             }
-        }, true).foreach(System.out::println);
+        }, true).foreach(new VoidFunction<String>() {
+            @Override
+            public void call(String s) throws Exception {
+                log.error("s=={}", s);
+            }
+        });
+//                .foreach(System.out::println);
 
         JavaPairRDD<String, Integer> abkrdd2 = rdd1.aggregateByKey(0,
                 new Function2<Integer, Integer, Integer>() {
+                    //在通一个分区中将分区中相同的key的value都和初始值相比较，注意必须是相同的key值，将最大的值保留。然后将每个分区中保留的的最大值，传入给下个函数进行操作。
                     @Override
                     public Integer call(Integer s, Integer v) throws Exception {
-                        System.out.println("seq:" + s + "," + v);
+                        System.out.println("seq: " + s + "," + v);
+//                        return s + v;
                         return Math.max(s, v);
                     }
+                    //将每个分区内key相同的value相加，返回结果。
                 }, new Function2<Integer, Integer, Integer>() {
                     @Override
                     public Integer call(Integer s, Integer v) throws Exception {
@@ -205,7 +223,8 @@ public class Transform {
         abkrdd2.foreach(new VoidFunction<Tuple2<String, Integer>>() {
             @Override
             public void call(Tuple2<String, Integer> s) throws Exception {
-                System.out.println("c:" + s._1 + ",v:" + s._2);
+                log.error("c:" + s._1 + ",v:" + s._2);
+//                System.out.println("c:" + s._1 + ",v:" + s._2);
             }
         });
     }
@@ -215,17 +234,51 @@ public class Transform {
      * combineByKey() 第一个参数：会使用一个叫作 createCombiner() 的函数来创建 ,那个键对应的累加器的初始值
      * mergeValue: 第二个参数： 如果这是一个在处理当前分区之前已经遇到的键， 它会使用 mergeValue() 方法将该键的累加器对应的当前值与这个新的值进行合并。
      * mergeCombiners:第三个参数：由于每个分区都是独立处理的， 因此对于同一个键可以有多个累加器。如果有两个或者更多的分区都有对应同一个键的累加器。
+     * 如果不是很懂的话，可以看一下这篇博客
      *
      * @param sc
      * @param scoreDetails
      */
     public static void combineByKeyDemo(JavaSparkContext sc, List<ScoreDetail> scoreDetails) {
-        JavaRDD<ScoreDetail> rdd1 = sc.parallelize(scoreDetails);
+        JavaRDD<ScoreDetail> rdd1 = sc.parallelize(scoreDetails, 3);
+        JavaRDD<String> stringJavaRDD = rdd1.mapPartitionsWithIndex(new Function2<Integer, Iterator<ScoreDetail>, Iterator<String>>() {
+            @Override
+            public Iterator<String> call(Integer v1, Iterator<ScoreDetail> v2) throws Exception {
+                ArrayList<String> list = new ArrayList<>();
+                while (v2.hasNext()) {
+                    list.add(v2.next() + " in " + (v1 + 1) + " partition");
+                }
+                return list.iterator();
+            }
+        }, true);
+        stringJavaRDD.foreach(new VoidFunction<String>() {
+            @Override
+            public void call(String s) throws Exception {
+                log.error("s==={}", s);
+            }
+        });
+
         JavaPairRDD<String, ScoreDetail> rdd2 = rdd1.mapToPair((PairFunction<ScoreDetail, String, ScoreDetail>) scoreDetail -> new Tuple2<>(scoreDetail.name, scoreDetail));
-        JavaPairRDD<String, Tuple2<Float, Integer>> rdd3 = rdd2.combineByKey(
-                (Function<ScoreDetail, Tuple2<Float, Integer>>) v1 -> new Tuple2<>(v1.score, 1),
-                (Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>>) (v1, v2) -> new Tuple2<>(v1._1 + v2.score, v1._2 + 1),
-                (Function2<Tuple2<Float, Integer>, Tuple2<Float, Integer>, Tuple2<Float, Integer>>) (v1, v2) -> new Tuple2<>(v1._1 + v1._1, v1._2 + v2._2));
+        JavaPairRDD<String, Tuple2<Float, Integer>> rdd3 = rdd2.combineByKey(new Function<ScoreDetail, Tuple2<Float, Integer>>() {
+            @Override
+            public Tuple2<Float, Integer> call(ScoreDetail v1) throws Exception {
+                return new Tuple2<>(v1.score, 1);
+            }
+        }, new Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>>() {
+            @Override
+            public Tuple2<Float, Integer> call(Tuple2<Float, Integer> v1, ScoreDetail v2) throws Exception {
+                return new Tuple2<>(v1._1 + v2.score, v1._2 + 1);
+            }
+        }, new Function2<Tuple2<Float, Integer>, Tuple2<Float, Integer>, Tuple2<Float, Integer>>() {
+            @Override
+            public Tuple2<Float, Integer> call(Tuple2<Float, Integer> v1, Tuple2<Float, Integer> v2) throws Exception {
+                return new Tuple2<>(v1._1 + v2._1, v1._2 + v2._2);
+            }
+        });
+//        JavaPairRDD<String, Tuple2<Float, Integer>> rdd3 = rdd2.combineByKey(
+//                (Function<ScoreDetail, Tuple2<Float, Integer>>) v1 -> new Tuple2<>(v1.score, 1),
+//                (Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>>) (v1, v2) -> new Tuple2<>(v1._1 + v2.score, v1._2 + 1),
+//                (Function2<Tuple2<Float, Integer>, Tuple2<Float, Integer>, Tuple2<Float, Integer>>) (v1, v2) -> new Tuple2<>(v1._1 + v2._1, v1._2 + v2._2));
         System.out.println(rdd3.collect());
     }
 
@@ -237,7 +290,7 @@ public class Transform {
 
     //通过combineByKey实现wordCount程序
     public static void combineByKeyWc(JavaSparkContext sc) {
-        List<String> list = Arrays.asList("hello spark", "hello java", "hello flink","hello flink","hello java","hello spark");
+        List<String> list = Arrays.asList("hello spark", "hello java", "hello flink", "hello flink", "hello java", "hello spark");
         JavaRDD<String> parallelize = sc.parallelize(list);
         JavaRDD<String> rdd1 = parallelize.flatMap(line -> Arrays.stream(line.split(",")).iterator());
         JavaPairRDD<String, Integer> rdd2 = rdd1.mapToPair((PairFunction<String, String, Integer>) s -> new Tuple2<>(s, 1));

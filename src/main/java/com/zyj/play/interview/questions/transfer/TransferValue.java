@@ -1,5 +1,8 @@
 package com.zyj.play.interview.questions.transfer;
 
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 /**
  * @author zhangyingjie
  * 考察基本类型 对象 和String 之间的区别
@@ -51,6 +54,11 @@ public class TransferValue {
         test.change(strObj, ch);
         //best
         System.out.println(ch);
+
+        new TreeMap<>();
+        new TreeSet<>();
+
+
     }
 }
 

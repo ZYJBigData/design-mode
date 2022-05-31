@@ -1,9 +1,12 @@
 package com.zyj.play.interview.questions.flink.failoverstrategies;
 
-import com.zyj.play.interview.questions.flink.sink.KafkaSinkDemo;
-import com.zyj.play.interview.questions.flink.source.KafkaSourceDemo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.logging.log4j.util.Strings;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zhangyingjie
@@ -26,7 +29,20 @@ public class TestDemo {
 //        //选择状态后端
 //        env.setStateBackend(new FsStateBackend(new Path("hdfs://192.168.10.204:8020/checkpoint")));
 
-        env.addSource(KafkaSourceDemo.getKafkaSource()).addSink(KafkaSinkDemo.getKafkaProducer());
-        env.execute("word count from kafka data");
+//        env.addSource(KafkaSourceDemo.getKafkaSource()).addSink(KafkaSinkDemo.getKafkaProducer());
+//        env.execute("word count from kafka data");
+
+        List<String> lastNotNullValue = new ArrayList<>();
+        String a = Strings.isNotBlank(null)? "a": CollectionUtils.isNotEmpty(lastNotNullValue) ? lastNotNullValue.get(0) : null;
+        System.out.println("a=={}"+a);
+
+//        if (CollectionUtils.isNotEmpty(lastNotNullValue)) {
+//            if (Strings.isNotBlank("a")) {
+//                System.out.println("a=={}" + a);
+//            } else {
+//                lastNotNullValue.get(0);
+//            }
+//        }
+//        System.out.println("null");
     }
 }
