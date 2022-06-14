@@ -20,6 +20,7 @@
         <cron.utils.version>5.0.5</cron.utils.version>
         <curator.version>4.2.0</curator.version>
         <zookeeper.version>3.4.14</zookeeper.version>
+        <minio.version>8.4.2</minio.version>
         <commons.collections4.version>4.1</commons.collections4.version>
     </properties>
 
@@ -273,6 +274,11 @@
             <artifactId>flink-table-planner-blink_2.11</artifactId>
             <version>${flink.version}</version>
 <!--            <scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hive</groupId>
