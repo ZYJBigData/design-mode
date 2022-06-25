@@ -2,7 +2,7 @@ package com.zyj.play.zookpeer.common;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.flink.shaded.curator4.org.apache.curator.retry.ExponentialBackoffRetry;
 
 public class ZookpeerClient {
     public static String zkServerAddress = "192.168.10.189:2181";
@@ -13,7 +13,7 @@ public class ZookpeerClient {
                 .connectString(zkServerAddress)
                 .sessionTimeoutMs(5000)
                 .connectionTimeoutMs(5000)
-                .retryPolicy(retryPolicy)
+//                .retryPolicy(retryPolicy)
                 .build();
     }
 }
