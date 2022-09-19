@@ -2,7 +2,6 @@ package com.zyj.play.design.mode.observerpattern.custom;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * @author zhangyingjie
  */

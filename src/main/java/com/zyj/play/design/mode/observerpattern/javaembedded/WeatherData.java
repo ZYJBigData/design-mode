@@ -1,6 +1,9 @@
 package com.zyj.play.design.mode.observerpattern.javaembedded;
 
 import java.util.Observable;
+/**
+ * 被观察对象
+ */
 
 /**
  * @author zhangyingjie

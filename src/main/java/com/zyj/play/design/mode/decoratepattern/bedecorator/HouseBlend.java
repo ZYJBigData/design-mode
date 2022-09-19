@@ -5,13 +5,15 @@ import com.zyj.play.design.mode.decoratepattern.Beverage;
 /**
  * @author zhangyingjie
  */
-public class HouseBlend extends Beverage {
-    public HouseBlend() {
-        description = "house blend coffee";
+public class HouseBlend implements Beverage {
+
+    @Override
+    public String getDescription() {
+        return "首选咖啡";
     }
 
     @Override
-    public double cost() {
+    public double getPrice() {
         return 0.89;
     }
 }

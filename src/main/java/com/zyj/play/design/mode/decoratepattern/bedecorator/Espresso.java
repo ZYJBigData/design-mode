@@ -1,16 +1,21 @@
 package com.zyj.play.design.mode.decoratepattern.bedecorator;
 
 import com.zyj.play.design.mode.decoratepattern.Beverage;
+/**
+ * 浓咖啡
+ */
 
 /**
  * @author zhangyingjie
  */
-public class Espresso extends Beverage {
-    public Espresso(){
-        description="espresso";
-    }
+public class Espresso implements Beverage {
     @Override
-    public double cost() {
+    public String getDescription() {
+        return "浓咖啡";
+    }
+
+    @Override
+    public double getPrice() {
         return 1.99;
     }
 }

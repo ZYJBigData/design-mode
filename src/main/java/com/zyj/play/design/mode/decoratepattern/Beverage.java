@@ -1,18 +1,18 @@
 package com.zyj.play.design.mode.decoratepattern;
+/**
+ * 饮料 被装饰的对象
+ */
 
 /**
  * @author zhangyingjie
  */
-public abstract class Beverage {
-    public String description="Unknown Beverage";
+public interface  Beverage {
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription();
 
     /**
      * 每次饮料都可以计算价格
      * @return 返回每种饮料的价格
      */
-    public abstract double cost();
+    public double getPrice();
 }

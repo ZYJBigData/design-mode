@@ -8,11 +8,11 @@ package com.zyj.play.interview.questions.aop.jdk;
 public class RealSubject implements Subject {
     @Override
     public final String SayHello(String name) {
-        return "hello " + name;
+        return "你好 " + name;
     }
 
     @Override
     public String SayGoodBye() {
-        return " good bye ";
+        return " 拜拜 ";
     }
 }
