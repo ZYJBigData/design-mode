@@ -62,7 +62,7 @@ public class NioServer {
     }
 
     private void accept(SelectionKey selectionKey) throws IOException {
-        System.out.println(selectionKey.hashCode() + ":isAcceptable");
+        System.out.println(selectionKey.hashCode() + ":已经获取到连接");
         ServerSocketChannel socketChannel = (ServerSocketChannel) selectionKey.channel();
         //获取请求连接的通道，accept()时会创建新的socketChannel用于后续的读写。
         // ServerSocketChannel只负责监听连接事件，相当于总机，接入请求后，根据其事件类型，转给分机处理（是创建新的）
@@ -74,16 +74,16 @@ public class NioServer {
     }
 
     public void read(SelectionKey selectionKey) throws IOException {
-        System.out.println(selectionKey.hashCode() + ":isReadable");
+        System.out.println(selectionKey.hashCode() + ":读取请求");
         SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
         //完成IO的第二步：从内核空间到复制到用户空间,线程处于阻塞状态
         //当传入的数据大于buffer大小时，当buffer满，会立刻返回；然后会重新触发读事件，进行继续读取
         int length = socketChannel.read(readBuffer);
-        System.out.println("length :" + length);
+        System.out.println("数据长度是 :" + length);
         if (length > 0) {
             readBuffer.flip();
             String text = new String(readBuffer.array(), StandardCharsets.UTF_8).trim();
-            System.out.println(selectionKey.hashCode() + ":from client data:" + text);
+            System.out.println(selectionKey.hashCode() + ":从客户端发过来的数据是:" + text);
             socketChannel.shutdownInput();
             socketChannel.register(selector, SelectionKey.OP_WRITE);
         }
@@ -91,8 +91,8 @@ public class NioServer {
 
     public void write(SelectionKey selectionKey) throws IOException {
         SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-        System.out.println(selectionKey.hashCode() + ":isWritable");
-        writeBuff.put("hello client, i am nio server, i receive your request".getBytes(StandardCharsets.UTF_8));
+        System.out.println(selectionKey.hashCode() + ":写的请求");
+        writeBuff.put("你好客户端，我是服务端，我已经接受到你的请求".getBytes(StandardCharsets.UTF_8));
         //flip和rewind的区别：都是把position置为0,但是flip会修改limit的值为当前position，而rewind默认limit就是capacity
         writeBuff.flip();
         while (writeBuff.hasRemaining()) {

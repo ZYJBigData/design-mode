@@ -22,6 +22,7 @@
         <zookeeper.version>3.4.14</zookeeper.version>
         <minio.version>8.4.2</minio.version>
         <jna.version>5.8.0</jna.version>
+        <oshi.core.version>3.5.0</oshi.core.version>
         <commons.collections4.version>4.1</commons.collections4.version>
     </properties>
 
@@ -36,7 +37,7 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${scala.version}</artifactId>
             <version>${spark.version}</version>
-            
+
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
@@ -892,17 +893,17 @@
         <!--            <version>2.6.5</version>-->
         <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/eu.agno3.jcifs/jcifs-ng -->
-<!--        <dependency>-->
-<!--            <groupId>eu.agno3.jcifs</groupId>-->
-<!--            <artifactId>jcifs-ng</artifactId>-->
-<!--            <version>2.1.7</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>slf4j-api</artifactId>-->
-<!--                    <groupId>org.slf4j</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>eu.agno3.jcifs</groupId>-->
+        <!--            <artifactId>jcifs-ng</artifactId>-->
+        <!--            <version>2.1.7</version>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>slf4j-api</artifactId>-->
+        <!--                    <groupId>org.slf4j</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>bolt</artifactId>
@@ -938,15 +939,25 @@
             <artifactId>disruptor</artifactId>
             <version>3.4.2</version>
         </dependency>
-        
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>${oshi.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.clearspring.analytics</groupId>
+            <artifactId>stream</artifactId>
+            <version>2.9.5</version>
+        </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>

@@ -131,14 +131,14 @@ public class ZKCacheTest {
             }
         });
 
-        //节点变化的监听器
-        treeCache.getListenable().addListener(new TreeCacheListener() {
-            public void childEvent(CuratorFramework curatorFramework, TreeCacheEvent treeCacheEvent) throws Exception {
-                System.out.println("treeCache ------ Type:" + treeCacheEvent.getType() + ",");
-                System.out.println(treeCacheEvent.getData().getPath());
-
-            }
-        });
+//        //节点变化的监听器
+//        treeCache.getListenable().addListener(new TreeCacheListener() {
+//            public void childEvent(CuratorFramework curatorFramework, TreeCacheEvent treeCacheEvent) throws Exception {
+//                System.out.println("treeCache ------ Type:" + treeCacheEvent.getType() + ",");
+//                System.out.println(treeCacheEvent.getData().getPath());
+//
+//            }
+//        });
         Thread.sleep(Integer.MAX_VALUE);
     }
 }

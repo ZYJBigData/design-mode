@@ -1,6 +1,6 @@
 package com.zyj.play.letcode.string;
 
-import com.zyj.play.letcode.lianbiao.ListNode;
+import com.zyj.play.letcode.pojo.ListNode;
 
 /**
  * @author zhangyingjie

@@ -1,5 +1,7 @@
 package com.zyj.play.letcode.lianbiao;
 
+import com.zyj.play.letcode.pojo.ListNode;
+
 /**
  * 定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
  * 输入: 1->2->3->4->5->NULL

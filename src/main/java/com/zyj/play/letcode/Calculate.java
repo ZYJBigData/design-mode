@@ -1,10 +1,10 @@
 package com.zyj.play.letcode;
 
-import com.zyj.play.letcode.lianbiao.ListNode;
+import com.zyj.play.letcode.pojo.ListNode;
 import com.zyj.play.letcode.tree.TreeNode;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.HdfsConfiguration;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 
 import java.io.IOException;

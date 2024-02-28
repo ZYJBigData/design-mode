@@ -18,5 +18,7 @@ public class BloomFilterTest {
         System.out.println(charSequenceBloomFilter.mightContain("b"));
         System.out.println(charSequenceBloomFilter.mightContain("d"));
         System.out.println(charSequenceBloomFilter.mightContain("a"));
+
+
     }
 }

@@ -1,5 +1,7 @@
 package com.zyj.play.letcode.lianbiao;
 
+import com.zyj.play.letcode.pojo.ListNode;
+
 /**
  * 快慢指针的问题
  * 给定一个链表，判断链表中是否有环。

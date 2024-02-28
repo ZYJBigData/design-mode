@@ -1,5 +1,8 @@
 package com.zyj.play.letcode.lianbiao;
 
+import com.zyj.play.letcode.pojo.ListNode;
+import com.zyj.play.letcode.util.DataPrint;
+
 import java.util.LinkedList;
 
 /**
@@ -7,12 +10,12 @@ import java.util.LinkedList;
  */
 public class AddTwoNumbers {
     public static void main(String[] args) {
-        ListNode listNode = new ListNode(2);
-        listNode.next = new ListNode(4);
-        listNode.next.next = new ListNode(3);
+        ListNode listNode = new ListNode(1);
+        listNode.next = new ListNode(2);
+        listNode.next.next = new ListNode(4);
 
-        ListNode listNode1 = new ListNode(5);
-        listNode1.next = new ListNode(6);
+        ListNode listNode1 = new ListNode(1);
+        listNode1.next = new ListNode(3);
         listNode1.next.next = new ListNode(4);
 
 //        ListNode listNode = new ListNode(9);
@@ -32,9 +35,26 @@ public class AddTwoNumbers {
 //        ListNode listNode1 = new ListNode(9);
 //        listNode1.next = new ListNode(2);
         AddTwoNumbers addTwoNumbers = new AddTwoNumbers();
-        ListNode sumNode = addTwoNumbers.addTwoNumbers(listNode, listNode1);
-        System.out.println("sumNode=={}" + sumNode);
+//        DataPrint.printListNode(listNode);
+//        DataPrint.printListNode(listNode1);
+        ListNode sumNode = addTwoNumbers.mergeTwoLists(listNode, listNode1);
+        DataPrint.printListNode(sumNode);
     }
+
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        } else if (list2 == null) {
+            return list1;
+        } else if (list1.val < list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+    }
+
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         int l1Count = count(l1);

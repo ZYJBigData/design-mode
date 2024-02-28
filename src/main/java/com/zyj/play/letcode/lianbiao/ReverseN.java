@@ -1,5 +1,7 @@
 package com.zyj.play.letcode.lianbiao;
 
+import com.zyj.play.letcode.pojo.ListNode;
+
 /**
  * 旋转指定数字的的链表长度
  *
