@@ -1,7 +1,8 @@
 package com.zyj.play.letcode.array;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import com.zyj.play.letcode.pojo.ListNode;
+import com.zyj.play.letcode.util.DataGenerator;
+import com.zyj.play.letcode.util.DataPrint;
 
 /**
  * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
@@ -20,39 +21,26 @@ public class MoveZeroes {
 //            System.out.print(nums[i] + " ");
 //        }
 //        moveZeroes.reverse(1);
-        System.out.println(search(nums, 0));
+        ListNode listNode = DataGenerator.getListNode("1,2,3,4,5");
+        ListNode listNode1 = reverseList(listNode);
+        DataPrint.printListNode(listNode1);
+
+    }
+
+    public static ListNode reverseList(ListNode head) {
+        ListNode l = new ListNode();
+        l.next = null;
+        ListNode curr = head.next;
+        while (curr != null) {
+            head.next = l.next;
+            l.next = head;
+            head = curr;
+            curr = curr.next;
+        }
+        return head;
     }
 
     //二分查找
-    public static int search(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length-1;
-        return digui(nums, left, right, target);
-
-    }
-    
-    public static int findMinIndex(int[] nums){
-        Arrays.asList(nums).sort(new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[1];
-            }
-        });
-    } 
-
-    public static int digui(int[] nums, int left, int right, int target) {
-        if (left>=right){
-            return -1;
-        }
-        int mid = (left + right) / 2;
-        if (nums[mid] == target) {
-            return mid;
-        }
-        digui(nums, mid + 1, right, target);
-        digui(nums, left, mid, target);
-        return -1;
-    }
-
     public void moveZeroes(int[] nums) {
         int slow = 0;
         int fast = 0;
